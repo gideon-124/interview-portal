@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 
 function App() {
+  //console.log(data)
   return (
     <div>
       <BrowserRouter>
