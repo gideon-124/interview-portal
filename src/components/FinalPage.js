@@ -20,7 +20,7 @@ const FinalPage = () => {
                             <div className="panel-heading">{posts.name}- Result</div>
                             <div className="panel-body">
                                 <center>
-                                    <h2 className="">Total no of Questions:7</h2>
+                                    <h2 className="">Total no of Questions:{posts.questions}</h2>
                                     <h3 className="text-success">Correct Answers: 3
                                         <span className="text-danger">Wrong Answers: 4</span></h3>
                                 </center>

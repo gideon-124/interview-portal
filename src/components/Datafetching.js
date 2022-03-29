@@ -14,21 +14,56 @@ function Datafetching(props) {
             console.log(error)
         })
     },[]) */
-    console.log(location.state);
+    //console.log(location.state);
     const [post, setPost] = useState(location.state);
     const [count, setCount] = useState(0)
-    console.log(count)
+    //console.log(count)
     const [score, setScore] = useState(0)
+    //const[questions,setQuestions]=useState()
+    //const[options,setOptions]=useState([])
+    //const[options,setOptions]=useState()
 
     
 
-    const handleSubmit = () => {
-        setCount(count + 1)
+    const handleSubmit = (e) => {
+       setCount(count + 1)
+        
         // if(correctOptionIndex){
         //     setScore(score+1)
         // }
+        // console.log(post[0].questions.length)
+        // setCount(post[0].questions.length>=count?count+1:count)
+        //setCount(post[0].questions.length>count?count+1:count)
+        //console.log(post[0])
 
     }
+    //console.log(post[0])
+
+    const AddData = (event) => {
+        
+    let arrdata = JSON.parse(localStorage.getItem(post.questions[count]._id))
+        let  options = [...arrdata, event.target.value]
+        localStorage.setItem(post.questions[count]._id, JSON.stringify(options));
+      };
+
+      const Addradio=(e)=>{
+        localStorage.setItem(JSON.stringify(post.questions[count]._id), JSON.stringify(e.target.value))
+        // let op=[e.target.value]
+        //let options=[...Addradio, e.target.value]
+      }
+      if(post.questions[count].type){
+
+        localStorage.setItem(post.questions[count]._id, JSON.stringify([]))
+        //localStorage.setItem(post.questions[count]._id,JSON.stringify(options))
+      }else{
+    localStorage.setItem(post.questions[count]._id, JSON.stringify([]))
+     //localStorage.setItem(post.questions[count]._id, JSON.stringify(options))
+
+      }
+      
+      
+    //   post.questions[count]._id.splice(1);
+      //localStorage.removeItem(post.questions[count]._id, JSON.stringify([]))
 
     return (
         <div>
@@ -70,8 +105,8 @@ function Datafetching(props) {
 
 
                                                             <tr key={op}>
-                                                                <input type="radio" name="option" value="option1" />
-                                                                <td>{op}</td>
+                                                                <input type={post.questions[count].type ? 'checkbox' : 'radio'} name="option" value={index} onClick={post.questions[count].type ? AddData:Addradio} id={op}/>
+                                                                <label htmlFor={op}>{op}</label>
 
 
                                                             </tr>
@@ -84,10 +119,10 @@ function Datafetching(props) {
                                     </form>
                                 </div>
                                 <div className="panel-footer">
-                                    < button href="test.html" className="btn btn-success" onClick={() => setCount(count - 1)}>previous</button>
+                                    < button href="test.html" className="btn btn-success" onClick={() => setCount(count - 1)} disabled={count===0} >previous</button>
 
 
-                                    < button href="test.html" className="btn btn-success" onClick={handleSubmit} >Next </button>
+                                    < button href="test.html" className="btn btn-success" onClick={handleSubmit} disabled={count===6} >Next </button>
                                     <Link to="/final">
                                         <button href="finish.html" className="pull-right btn btn-danger">Finish</button>
                                     </Link>
