@@ -17,17 +17,36 @@ function Datafetching(props) {
     //console.log(location.state);
     const [post, setPost] = useState(location.state);
     const [count, setCount] = useState(0)
+    const [answers, setAnswers] = useState(localStorage.getItem('answers') ? JSON.parse(localStorage.getItem('answers')) : Array(location.state.questions.length).fill(null));
+    //console.log(answers);
     //console.log(count)
-    const [score, setScore] = useState(0)
+    // const [score, setScore] = useState(0)
+    //console.log(post.questions[count]._id)
+    // const localData = localStorage.getItem(`${post.questions[count]._id}`)
+    const localData = localStorage.getItem('answers');
+    // console.log(localData)
     //const[questions,setQuestions]=useState()
     //const[options,setOptions]=useState([])
     //const[options,setOptions]=useState()
 
-    
+    useEffect(() => {
+        localStorage.setItem('answers', JSON.stringify(answers));
+    }, [answers])
+
+    // const [cc,setCc]=useState(post.questions[count]?.correctOptionIndex)
+    // console.log(cc)
+
+
+
+
+
+
+
+
 
     const handleSubmit = (e) => {
-       setCount(count + 1)
-        
+        setCount(count + 1)
+
         // if(correctOptionIndex){
         //     setScore(score+1)
         // }
@@ -38,32 +57,59 @@ function Datafetching(props) {
 
     }
     //console.log(post[0])
+    //const [score, setScore] = useState(0)
+    //console.log(score)
+    // if(post.questions[count]?.correctOptionIndex===answers[count]?.includes('${index}'))
+    // {
+    //     setScore(score+1)
+    // }
+    //console.log(post.questions[count]?.correctOptionIndex);
+    //console.log(answers[count])
+    console.log(post.questions[count]?.correctOptionIndex==answers[count])   
+    //console.log(setScore)
 
-    const AddData = (event) => {
-        
-    let arrdata = JSON.parse(localStorage.getItem(post.questions[count]._id))
-        let  options = [...arrdata, event.target.value]
-        localStorage.setItem(post.questions[count]._id, JSON.stringify(options));
-      };
 
-      const Addradio=(e)=>{
-        localStorage.setItem(JSON.stringify(post.questions[count]._id), JSON.stringify(e.target.value))
+    const AddData = (index, event) => {
+        // console.log("first")
+        const ans = [...answers];
+        // console.log(ans[count])
+        ans[count] = ans[count] ? [...ans[count], index] : [index];
+        // console.log(ans)
+        setAnswers(ans);
+        console.log(event.target.value)
+        // setAnswers(prev => prev.map((ans,index) => index === count ? [...ans,event.target.value] : ans));
+
+        // let arrdata = JSON.parse(localStorage.getItem(`answers`))
+        // let options = [...arrdata, event.target.value]
+        // localStorage.setItem(`${post.questions[count]._id}`, JSON.stringify(options));
+    };
+
+    const Addradio = (index, event) => {
+        // console.log("second")
+        const ans = [...answers];
+        ans[count] = index;
+        //console.log(ans)
+        setAnswers(ans);
+        //    console.log(event.target.value)
+        // setAnswers(prev => prev.map((ans,index) => index === count ? e.target.value : ans));
+        // localStorage.setItem(`${post.questions[count]._id}`, JSON.stringify(e.target.value))
         // let op=[e.target.value]
         //let options=[...Addradio, e.target.value]
-      }
-      if(post.questions[count].type){
+    }
+    // if (post.questions[count].type) {
 
-        localStorage.setItem(post.questions[count]._id, JSON.stringify([]))
-        //localStorage.setItem(post.questions[count]._id,JSON.stringify(options))
-      }else{
-    localStorage.setItem(post.questions[count]._id, JSON.stringify([]))
-     //localStorage.setItem(post.questions[count]._id, JSON.stringify(options))
+    //     localStorage.setItem(`${post.questions[count]._id}`, JSON.stringify([]))
+    //     //localStorage.setItem(post.questions[count]._id,JSON.stringify(options))
+    //  } 
+    //else {
+    //     localStorage.setItem(`${post.questions[count]._id}`, JSON.stringify([]))
+    //     //localStorage.setItem(post.questions[count]._id, JSON.stringify(options))
 
-      }
-      
-      
+    // }
+
+
     //   post.questions[count]._id.splice(1);
-      //localStorage.removeItem(post.questions[count]._id, JSON.stringify([]))
+    //localStorage.removeItem(post.questions[count]._id, JSON.stringify([]))
 
     return (
         <div>
@@ -100,16 +146,20 @@ function Datafetching(props) {
                                                 {
 
                                                     post.questions[count].options.map((op, index) => {
+                                                        const checked = post.questions[count].type ? answers[count]?.includes(index) : index === answers[count];
+                                                        //console.log()
+                                                        // console.log(checked)
                                                         //console.log(op)
                                                         return (
 
+                                                            
+                                                                <tr key={op}>
+                                                                    <input type={post.questions[count].type ? 'checkbox' : 'radio'} name="option" value={index} onClick={(event) => post.questions[count].type ? AddData(index, event) : Addradio(index, event)} id={op} checked={checked} />
+                                                                    <label htmlFor={op}>{op}</label>
 
-                                                            <tr key={op}>
-                                                                <input type={post.questions[count].type ? 'checkbox' : 'radio'} name="option" value={index} onClick={post.questions[count].type ? AddData:Addradio} id={op}/>
-                                                                <label htmlFor={op}>{op}</label>
 
-
-                                                            </tr>
+                                                                </tr>
+                                                            
                                                         )
                                                     })
                                                 }
@@ -119,10 +169,10 @@ function Datafetching(props) {
                                     </form>
                                 </div>
                                 <div className="panel-footer">
-                                    < button href="test.html" className="btn btn-success" onClick={() => setCount(count - 1)} disabled={count===0} >previous</button>
+                                    < button href="test.html" className="btn btn-success" onClick={() => setCount(count - 1)} disabled={count === 0} >previous</button>
 
 
-                                    < button href="test.html" className="btn btn-success" onClick={handleSubmit} disabled={count===6} >Next </button>
+                                    < button href="test.html" className="btn btn-success" onClick={handleSubmit} disabled={count === 6} >Next </button>
                                     <Link to="/final">
                                         <button href="finish.html" className="pull-right btn btn-danger">Finish</button>
                                     </Link>
