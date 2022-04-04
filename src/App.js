@@ -14,7 +14,7 @@ function App() {
       <BrowserRouter>
       <Routes>
         <Route path="/" element={<Page1/>}/>
-        <Route path="/questions" element={<Datafetching/>}/>
+        <Route path="/questions/:id" element={<Datafetching/>}/>
         <Route path="/final" element={<FinalPage/>}/>
         <Route path="/home" element={<Page1/>}/>
       </Routes>
