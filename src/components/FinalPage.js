@@ -49,7 +49,9 @@ const FinalPage = () => {
                                     
                                     <h3 className="text-success">Correct Answers: {location.state.score}
                                         <span className="text-danger">Wrong Answers:{posts.questions.length-location.state.score}  </span></h3>
-                                        <button  onClick={() => navigate('/home')} href="finish.html" className="btn btn-warning">Home</button>
+                                        <button  onClick={() => {
+                                            localStorage.clear()
+                                            navigate('/home')}} href="finish.html" className="btn btn-warning">Home</button>
                                 </center>
                                 
                             </div>
