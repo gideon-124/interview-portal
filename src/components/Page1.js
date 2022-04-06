@@ -42,7 +42,7 @@ const Page1 = () => {
                                                 <td>{post.questions.length}</td>
                                                 <td>
                                                     
-                                                    <div onClick={() => navigate(`/questions/${post._id}`, {state:post})} className="btn btn-warning">Start Test
+                                                <div onClick={() => navigate(`/questions/${post._id}`, {state:post})} className="btn btn-warning">Start Test
 
                                                     </div>
                                                 </td>
