@@ -16,6 +16,7 @@ const Page1 = () => {
                 console.log(error)
             })
     }, [])
+    //console.log(post.questions[0]._id)
 
     return (
         <div>
@@ -34,6 +35,7 @@ const Page1 = () => {
                                 </tr>
                             </thead>
                             <tbody>
+                                
                                 {
                                     posts.map((post, index) => {
                                         return (
@@ -42,7 +44,7 @@ const Page1 = () => {
                                                 <td>{post.questions.length}</td>
                                                 <td>
                                                     
-                                                <div onClick={() => navigate(`/questions/${post._id}`, {state:post})} className="btn btn-warning">Start Test
+                                                <div onClick={() => navigate(`/questions/${post._id}/${post.questions[0]._id}`, {state:post})} className="btn btn-warning">Start Test
 
                                                     </div>
                                                 </td>
@@ -51,33 +53,7 @@ const Page1 = () => {
 
                                     })
                                 }
-                                {/* <tr>
-                                    <td>AngularJS Test</td>
-                                    <td>5</td>
-                                    <td>
-                                        <Link to="/questions">
-                                            <a href="test.html" className="btn btn-warning">Start Test</a>
-
-                                        </Link>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Javascript Test</td>
-                                    <td>7</td>
-                                    <td>
-                                        <Link to="/questions">
-                                            <a href="test.html" className="btn btn-warning">Start Test</a>
-                                        </Link>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Node JS Test</td>
-                                    <td>5</td>
-                                    <td> <Link to="/questions">
-                                        <a href="test.html" className="btn btn-warning">Start Test</a>
-                                    </Link>
-                                    </td>
-                                </tr> */}
+                                
 
                             </tbody>
                         </table>

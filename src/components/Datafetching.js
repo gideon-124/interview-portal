@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, Params, useLocation, useNavigate } from "react-router-dom";
+import { Link, Params, useLocation, useNavigate, useParams } from "react-router-dom";
 function Datafetching(props) {
+    const params=useParams();
+    //console.log(params)
   const location = useLocation();
   const navigate = useNavigate();
   const [post, setPost] = useState(location.state);
@@ -10,27 +12,45 @@ function Datafetching(props) {
   const [answers, setAnswers] = useState(0);
   const [radio, setRadio] = useState(0);
   
+  useEffect(()=>{
+   const qno= post.questions.findIndex(que=>que._id===params.id1)
+//    console.log(params.id1)
+//    console.log(qno)
+   setCount(qno)
+  },[])
   const handleSubmit = (e) => {
     setCount(post.questions.length >= count ? count + 1 : count);
     let a = [];
     a = post.questions[count].correctOptionIndex;
-    console.log(a);
+    
     let b = localStorage.getItem(post.questions[count]._id);
-    console.log(b);
+    
     if (JSON.stringify(a) == b) {
         localStorage.setItem("score",score+1)
       setScore((prev) => prev + 1);
-      console.log(score);
+      
     } else {
       setScore(score);
     }
+    
+   
   };
+  const handleSub=(e)=>{
+      setCount(count-1)
+     
+  }
+  const removSub=()=>{
+      post?.questions.map((ele)=>{
+         localStorage.removeItem(ele._id)
+        console.log("ele._id")
+      })
+  }
   const AddData = (event, index) => {
     const arr =
       JSON.parse(localStorage.getItem(post.questions[count]._id)) || [];
     if (event.target.checked) {
       let c = [...arr, index];
-      localStorage.setItem(post.questions[count]._id, JSON.stringify(c));
+      localStorage.setItem(post.questions[count]._id, JSON.stringify(c.sort()));
     } else {
       let c = [...arr];
       const d = c.filter((each) => each != event.target.value);
@@ -40,8 +60,11 @@ function Datafetching(props) {
   const Addradio = (e, index) => {
     localStorage.setItem(post.questions[count]._id, JSON.stringify(index));
     // console.log(setRadio(e.target.value))
-    setRadio((prev) => prev + 1);
+    //setRadio((prev) => prev + 1);
   };
+//   const  handlefinish=()=>{
+//       removSub()
+//   }
   return (
     <div>
       <>
@@ -61,7 +84,7 @@ function Datafetching(props) {
                           let checked = post.questions[count].type
                             ? JSON.parse(
                                 localStorage.getItem(post.questions[count]._id)
-                              )?.includes(`${index}`)
+                              )?.includes(index)
                             : JSON.parse(
                                 localStorage.getItem(post.questions[count]._id)
                               ) == index;
@@ -96,7 +119,8 @@ function Datafetching(props) {
                   <button
                     href="test.html"
                     className="btn btn-success"
-                    onClick={() => setCount(count - 1)}
+                    onClick={ () => {handleSub()
+                        navigate(`/questions/${post._id}/${post.questions[count-1]._id}`,{state:post})}}
                     disabled={count === 0}
                   >
                     previous
@@ -104,7 +128,8 @@ function Datafetching(props) {
                   <button
                     href="test.html"
                     className="btn btn-success"
-                    onClick={handleSubmit}
+                    onClick={ () => {handleSubmit();
+                        navigate(`/questions/${post._id}/${post.questions[count+1]._id}`,{state:post})}}
                     disabled={count === post.questions.length - 1}
                   >
                     Next{" "}
@@ -112,7 +137,8 @@ function Datafetching(props) {
                   <button
                     href="finish.html"
                     onClick={async () => {
-                      handleSubmit();
+                        
+                      handleSubmit()
                       navigate("/final", {
                         state: { post: post, score: score },
                       });
@@ -123,7 +149,7 @@ function Datafetching(props) {
                   </button>
                 </div>
               </div>
-              +
+              
             </div>
           </div>
         </div>

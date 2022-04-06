@@ -6,19 +6,10 @@ const FinalPage = () => {
   //     const[score,setScore]=useState(0){}
   const [posts, setPosts] = useState(location.state.post);
   const navigate = useNavigate();
-  console.log(location.state);
+  //console.log(location.state);
   const [count, setCount] = useState();
   const [score, setScore] = useState(0);
-  // useEffect(() => {
-  //     axios.get('https://dip-kaluse.github.io/examport/portal.json')
-  //         .then(response => {
-  //             setPosts(response.data.tests)
-  //         })
-  //         .catch(error => {
-  //             console.log(error)
-  //         })
-  // }, [])
-  //console.log(location.state)
+  
   return (
     <div>
       <div className="container">
@@ -40,7 +31,9 @@ const FinalPage = () => {
                     </span>
                   </h3>
                   <button
-                    onClick={() => navigate("/home")}
+                    onClick={() => { localStorage.clear()
+                        navigate("/home")}}
+                        
                     href="finish.html"
                     className="btn btn-warning"
                   >
